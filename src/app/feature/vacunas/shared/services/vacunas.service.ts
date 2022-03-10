@@ -58,6 +58,6 @@ export class VacunaService {
   }
 
   public consultarUsuario(tipoDoc: string, documento: string){
-    return this.httpa.get<Usuario>(`${environment.endpoint}usuarios/${tipoDoc}/${documento}`);
+    return this.httpa.get<Usuario[]>(`${environment.endpoint}usuarios/${tipoDoc}/${documento}`);
   }
 }

@@ -1,7 +1,7 @@
 import { by, element } from 'protractor';
 
 export class VacunasPage {
-   
+    private nombreUsuariosesion = element(by.id("nombreUsuariosesion"));
     private btnBuscar = element(by.id('btnBuscarVacunasId'));
     private inputTipoDoc= element(by.id("tipoDocUsuario"));
     private inputDoc= element(by.id("numDocumento"));
@@ -15,7 +15,8 @@ export class VacunasPage {
     private inputdosisPendientes = element(by.id("dosisPendientesVacuna"));
     private inputTiempoDosis = element(by.id("tiempoDosisVacuna"));
     private btnGuardarVacuna = element(by.id("btnGuardarVacuna"));
-    
+    private btnRegistrarVacuna = element(by.id("btnRegistrarvacuna"));
+    private listaVacunas = element.all(by.css('table.table tbody'));
 
     private inputtipoDocUsuarioregistro = element(by.id('tipoDocUsuarioregistro'));
     private inputnumDocumentoRegistro = element(by.id('numDocumentoRegistro'));
@@ -24,6 +25,24 @@ export class VacunasPage {
     private inputtipoSangre = element(by.id('tipoSangre'));
     private btnRegistrarUsuario = element(by.id('btnRegistrarusuario'));
     private btnRegistrarUsuarioGuardar = element(by.id('btnRegistrarUsuarioGuardar'));
+
+
+    private btnAplicarvacuna = element(by.id('btnAplicarvacunaShow'));
+    private inputEstadoAplicarvacuna = element(by.id('estadoaplicarvacuna'));
+    private btnAplicarVacunaGuardar = element(by.id('btnGuardarAplicarGuardar'));
+
+
+
+    async clickbtnAplicarvacuna() {
+        await this.btnAplicarvacuna.click();
+    }
+    async clickbtnAplicarVacunaGuardar() {
+        await this.btnAplicarVacunaGuardar.click();
+    }
+    async ingresarinputEstadoAplicarvacuna(estado) {
+        await this.inputEstadoAplicarvacuna.sendKeys(estado);
+    }
+
 
     async clickBotonBuscarVacunas() {
         await this.btnBuscar.click();
@@ -34,11 +53,16 @@ export class VacunasPage {
     async ingresarDocumento(documento){
         await this.inputDoc.sendKeys(documento);
     }
-    async ingresarPendientes(checkpendiente){
-        await this.checkPendientes.sendKeys(checkpendiente);
+    async ingresarPendientes(){
+        await this.checkPendientes.click();
     }
 
 
+
+    
+    async clickbtnRegistrarVacuna(){
+        await this.btnRegistrarVacuna.click();
+    }
 
     async ingresarinputNombreVacuna(inputNombreVacuna){
         await this.inputNombreVacuna.sendKeys(inputNombreVacuna);
@@ -65,6 +89,9 @@ export class VacunasPage {
         await this.btnGuardarVacuna.click();
     }
 
+    async contarvacunas() {
+        return this.listaVacunas.count();
+    }
 
     async ingresarinputtipoDocUsuarioregistro(inputtipoDocUsuarioregistro){
         await this.inputtipoDocUsuarioregistro.sendKeys(inputtipoDocUsuarioregistro);
@@ -89,5 +116,8 @@ export class VacunasPage {
         await this.btnRegistrarUsuarioGuardar.click();
     }
 
+    async obtenernombreUsuariosesion(){
+        return this.nombreUsuariosesion.getText()
+    }
 
 }

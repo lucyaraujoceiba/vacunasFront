@@ -40,4 +40,30 @@ describe('VacunarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('formulario de usuario es invalido cuando esta vacio', () => {
+    expect(component.usuarioForm.valid).toBeFalsy();
+  });
+
+  it('deberia buscar usuario con vacunas aplicadas',() => {
+    component.usuarioForm.controls.id.setValue('CC');
+    component.usuarioForm.controls.numeroDocumento.setValue('1234');
+    expect(component.usuarioForm.valid);
+    component.buscar();
+  });
+
+  it('deberia buscar usuario con vacunas pendientes',() => {
+    component.usuarioForm.controls.id.setValue('CC');
+    component.usuarioForm.controls.numeroDocumento.setValue('1234');
+    component.usuarioForm.controls.aplicadas.setValue(false);
+    expect(component.usuarioForm.valid);
+    component.buscar();
+  });
+
+  /*it('deberia crear usuario', () => {
+    component.
+  });*/
+
+
+
 });

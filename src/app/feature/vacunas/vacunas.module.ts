@@ -16,7 +16,8 @@ import { VacunaService } from './shared/services/vacunas.service';
     CommonModule,
     VacunasRoutingModule,
     SharedModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    
   ],
   providers: [VacunaService]
 })

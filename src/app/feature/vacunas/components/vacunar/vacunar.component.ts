@@ -1,6 +1,7 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Respuesta } from '@vacunas/shared/model/respuesta';
+import { Usuario } from '@vacunas/shared/model/usuario';
 import { Vacuna } from '@vacunas/shared/model/vacuna';
 import { VacunasPendientes } from '@vacunas/shared/model/vacunasPendiente';
 import { VacunaService } from '@vacunas/shared/services/vacunas.service';
@@ -18,7 +19,10 @@ const ESTADO_APLICADA = 'aplicada';
 const MENSAJE_VACUNAS = 'La próxima fecha de vacunas es: ';
 const MENSAJE_VACUNAS_B = ' y el valor a pagar es de: $';
 const CEDULA='CC';
-
+const USUARIO_NO_ENCONTRADO = "Usuario no encontrado";
+const VACUNA_REGISTRADA = "Vacuna registrada con exito";
+const VACUNA_APLICADA = "Vacuna aplicada con exito";
+const USUARIO_REGISTRADO = "Usuario registrado";
 
 @Component({
   selector: 'app-vacunar',
@@ -26,6 +30,8 @@ const CEDULA='CC';
   styleUrls: ['./vacunar.component.css']
 })
 export class VacunarComponent implements OnInit {
+
+  @ViewChild("templateMensaje") modal: TemplateRef<any>;
 
   usuarioForm: FormGroup;
   vacunaForm : FormGroup;
@@ -36,8 +42,9 @@ export class VacunarComponent implements OnInit {
   modalRef: BsModalRef;
   tipoDoc: string = "";
   documento: string = "";
-  idUsuario : number;
+  idUsuario : number = 0;
   nombreUsuario: string = "";
+  mensajealerta : string = "";
   mostrar = false;
   public listaVacunasP : Vacuna[];
   public vacunasPendientes:  VacunasPendientes;
@@ -47,7 +54,7 @@ export class VacunarComponent implements OnInit {
   headElements = ['ID', 'Nombre', 'Estado', 'Fecha Aplicación', 'Dosis aplicada','Tiempo entre dosis', 'Valor', 'Subsidiada', ' '];
 
   constructor(public modalService: BsModalService,
-    public vacunaService: VacunaService
+    public vacunaService: VacunaService,
     ) { }
 
   ngOnInit(): void {
@@ -59,20 +66,24 @@ export class VacunarComponent implements OnInit {
     this.tipoDoc = this.usuarioForm.get("id").value;
     this.documento = this.usuarioForm.get("numeroDocumento").value;
     this.mensaje = "";
-    this.idUsuario = null;
-    this.nombreUsuario = null;
+    this.idUsuario = 0;
+    this.nombreUsuario = '';
     this.buscarusuario();
-    if(this.usuarioForm.get(ESTADO_APLICADAS).value){
-      this.buscarAplicadas();
-    }else{
-      this.buscarPendientes();
+    if( this.nombreUsuario !== ''){
+      if(this.usuarioForm.get(ESTADO_APLICADAS).value){
+        this.buscarAplicadas();
+      }else{
+        this.buscarPendientes();
+      }
     }
+   
     
   }
   buscarAplicadas(){
     this.vacunaService.consultarVacunasAplicadas(this.tipoDoc,this.documento,ESTADO_APLICADAS).subscribe(
       data => (
-        this.listaVacunasP = data, this.idUsuario = this.listaVacunasP[0].idUsuario, this.mostrarLista = true)
+        this.listaVacunasP = data, this.idUsuario = this.listaVacunasP[0].idUsuario, this.mostrarLista = true),
+        (error => console.log(error))
 
     );
     
@@ -80,8 +91,18 @@ export class VacunarComponent implements OnInit {
   buscarusuario(){
     this.nombreUsuario = null;
     this.vacunaService.consultarUsuario(this.tipoDoc,this.documento).subscribe(
-      data =>(this.nombreUsuario = data[0].nombre, this.idUsuario = data[0].id,
-        console.log(this.nombreUsuario)));
+      data =>(this.validar(data)
+        ), (error => (console.log(USUARIO_NO_ENCONTRADO+ error))));
+  }
+  validar(data: Usuario[]){
+    console.log(data);
+    if(data.length === 0){
+      this.mensajealerta = USUARIO_NO_ENCONTRADO;
+      this.modalService.show(this.modal);
+    }else{
+      this.nombreUsuario = data[0].nombre;
+       this.idUsuario = data[0].id;
+    }
   }
   buscarPendientes(){
     this.mensaje = "";
@@ -150,6 +171,7 @@ export class VacunarComponent implements OnInit {
       console.log(data)
     });
     this.modalService.hide();
+    this.mensajealerta = VACUNA_REGISTRADA;
     
   }
 
@@ -163,15 +185,18 @@ export class VacunarComponent implements OnInit {
     this.vacunaService.aplicarVacuna(this.vacunaActualizarForm.value).subscribe(
       data=> (console.log(data),this.buscarPendientes() )
     );
+    this.mensajealerta = VACUNA_APLICADA;
   }
 
 
   registrarUsuarioshow(template: TemplateRef<any>){
+    console.log(template)
     this.construirFormularioregistrarUsuario();
     this.modalRef = this.modalService.show(template);
   }
 
   registrarUsuario(){
+    this.modalService.hide();
     this.nombreUsuario = this.registrarUsuarioForm.get("nombre").value;
     this.tipoDoc = this.registrarUsuarioForm.get("tipoIdentificacion").value;
     this.documento = this.registrarUsuarioForm.get("numeroIdentificacion").value;
@@ -181,6 +206,6 @@ export class VacunarComponent implements OnInit {
       data => (
       this.idUsuario = data.valor, this.buscarAplicadas())
     );
-    this.modalService.hide();
+    this.mensajealerta = USUARIO_REGISTRADO;
   }
 }
