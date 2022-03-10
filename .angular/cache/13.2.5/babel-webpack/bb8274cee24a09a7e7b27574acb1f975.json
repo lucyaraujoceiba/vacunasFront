@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const environment = {\n  production: true,\n  endpoint: 'http://localhost:8080/vacunas/vacunas/'\n};","map":null,"metadata":{},"sourceType":"module"}

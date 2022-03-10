@@ -1,0 +1,365 @@
+<div class="container">
+  <h1>Mis Vacunas</h1>
+  <form [formGroup]="usuarioForm" (ngSubmit)="buscar()">
+    <div class="row">
+      <div class="col-sm-2">
+        <label>Tipo documento:</label>
+      </div>
+      <div class="col-sm-4">
+        <select  id="tipoDocUsuario" name="tipoDocUsuario" 
+            formControlName="id" class="form-select form-control" >
+              <option value="CC" selected>Cedula ciudadania</option>
+              <option value="CE">Cedula extranjera</option>
+              <option value="PP">Pasaporte</option>
+              <option value="RC">Registro civil</option>
+              <option value="TI">Tarjeta de identidad</option>
+            </select>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2">
+        <label>Docuemnto:</label>
+      </div>
+      <div class="col-sm-4">
+        <input validar type="text" id="numDocumento" name="numeroDocumento" placeholder="Número documento"
+          class="form-control" formControlName="numeroDocumento">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2">
+          <label>Aplicadas?:</label>
+      </div>
+      <div class="col-sm-4">
+        <input type="checkbox" id="aplicadas" name="aplicadas" 
+           formControlName="aplicadas" checked>
+      </div> 
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-2">
+        <button (click)="buscar()" id="btnBuscarVacunasId" class="btn btn-primary" [disabled]="!usuarioForm.valid">Buscar</button>
+        <br>
+      </div>
+        <br>
+    </div>
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-2" >
+        <label class="link-primary" id="btnRegistrarusuario"
+        (click)="registrarUsuarioshow(templateRegistrarUsuario)">Registrar usuario</label>
+      </div>
+    </div>
+  </form>
+  <br>
+  <br>
+  <div *ngIf="nombreUsuario !== null && nombreUsuario !== ''">
+    <label >Usuario: {{nombreUsuario}}</label>
+    <br>
+    <div>
+      <br>
+      <div class="col-sm-2">
+          <button class="btn btn-primary" (click)="registrarvacuna(template)">Registrar vacuna</button>
+      </div>
+    </div>
+  </div>
+  
+  <br>
+  <div ><label>{{resultadoBusqueda}}</label> </div>
+  <div class="row" *ngIf="mostrarLista" >
+      <label>{{mensaje}}</label>
+      
+      <table mdbTable responsive="true" class="table">
+        <thead>
+          <tr>
+            <th *ngFor="let head of headElements" scope="col">{{head}} </th>
+          </tr>
+        </thead>
+        <tbody >
+          <tr mdbTableCol *ngFor="let el of listaVacunasP">
+            <th scope="row">{{el.id}}</th>
+            <td>{{el.nombre}}</td>
+            <td>{{el.estado}}</td>
+            <td>{{el.fechaAplicacion}}</td>
+            <td>{{el.dosis}}</td>
+            <td>{{el.tiempoEntreDosis}}</td>
+            <td>{{el.valor}}</td>
+            <td>{{el.subsidiada}}</td>
+            <td *ngIf="el.estado ==='pendiente'" (click)="aplicarVacuna(el, templateActualizar)"> 
+              <button>Aplicar</button> </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
+<ng-template #template>
+  <div class="modal-header">
+    <h3>Registrar vacuna</h3>
+    <button type="button" class="close pull-right" arial-label="Close" (click)="modalService.hide()">
+      <span aria-hidden="true"> &times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body">
+    <form [formGroup]="vacunaForm" (ngSubmit)="registrarVacuna()">
+      <div class="row">
+        <div class="col-sm-2 col-md-4">
+          <label>Nombre Vacuna:</label>
+        </div>
+        <div class="col-sm-4 col-md-8">
+          <input validar type="text" id="nombreVacuna" name="aplicadas" 
+            class="form-control" formControlName="nombre">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <label>Estado:</label>
+        </div>
+        <div class="col-sm-8">
+            <select  id="estadoVacuna" name="estado" 
+            formControlName="estado" class="form-select form-control" >
+              <option value="aplicada" selected>Aplicada</option>
+              <option value="pendiente">Pendiente</option>
+            </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <label>Dosis:</label>
+        </div>
+        <div class="col-sm-8">
+          <input validar type="number" id="dosisVacuna" name="dosis" placeholder="Número de dosis"
+            class="form-control" formControlName="dosis">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+            <label>valor:</label>
+          </div>
+          <div class="col-sm-8">
+            <input validar type="number" id="valorVacuna" name="valor" 
+              class="form-control" formControlName="valor">
+          </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-4">
+            <label>Subsidiada:</label>
+          </div>
+          <div class="col-sm-8">
+            <div>
+              <input type="checkbox" id="subsidiadaVacuna" name="subsidiada"
+              formControlName="subsidiada" checked>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+            <label>Dosis pendientes?</label>
+          </div>
+          <div class="col-sm-8">
+            <div>
+              <input type="checkbox" id="dosisPendientesVacuna" name="dosisPendientes"
+              formControlName="dosisPendiente" checked>
+            </div>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+            <label>Proxima dosis en: (meses):</label>
+          </div>
+          <div class="col-sm-8">
+            <input validar type="number" id="tiempoDosisVacuna" name="tiempoDosis" 
+              class="form-control" formControlName="tiempoEntreDosis">
+          </div>
+      </div>
+    
+  
+      <div class="row">
+        <div class="col-sm-8">
+            <button class="btn btn-primary" id="btnGuardarVacuna" [disabled]="!vacunaForm.valid">Guardar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+ 
+</ng-template>
+
+<ng-template #templateActualizar>
+
+  <div class="modal-header">
+    <h3>Aplicar vacuna</h3>
+    <button type="button" class="close pull-right" arial-label="Close" (click)="modalService.hide()">
+      <span aria-hidden="true"> &times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body">
+    <form [formGroup]="vacunaActualizarForm" (ngSubmit)="aplicar()">
+      <div class="row">
+        <div class="col-sm-2 col-4">
+          <label>Nombre Vacuna:</label>
+        </div>
+        <div class="col-sm-4 col-8">
+          <input readonly type="text" id="aplicadas" name="aplicadas" 
+            class="form-control" formControlName="nombre">
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-sm-4">
+          <label>Dosis:</label>
+        </div>
+        <div class="col-sm-8">
+          <input readonly type="number" id="dosis" name="dosis" placeholder="Número de dosis"
+            class="form-control" formControlName="dosis">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+            <label>Dosis pendientes?</label>
+          </div>
+          <div class="col-sm-8">
+            <div>
+              <input readonly type="text" id="dosisPendientes" name="dosisPendientes"
+              formControlName="dosisPendiente" class="form-control">
+            </div>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+            <label>Proxima dosis en: (meses):</label>
+          </div>
+          <div class="col-sm-8">
+            <input readonly type="number" id="tiempoDosis" name="tiempoDosis" 
+              class="form-control" formControlName="tiempoEntreDosis">
+          </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4">
+          <label>Estado:</label>
+        </div>
+        <div class="col-sm-8">
+            <select  id="estado" name="estado" 
+            formControlName="estado" class="form-select form-control" >
+              <option value="aplicada" selected>Aplicada</option>
+              <option value="pendiente">Pendiente</option>
+            </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+            <label>valor:</label>
+          </div>
+          <div class="col-sm-8">
+            <input validar type="number" id="valor" name="valor" 
+              class="form-control" formControlName="valor">
+          </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-4">
+            <label>Subsidiada:</label>
+          </div>
+          <div class="col-sm-8">
+            <div>
+              <input type="checkbox" id="subsidiada" name="subsidiada"
+              formControlName="subsidiada" checked>
+            </div>
+          </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-sm-8">
+            <button class="btn btn-primary" [disabled]="!vacunaActualizarForm.valid">Guardar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #templateRegistrarUsuario>
+
+  <div class="modal-header">
+    <h3>Registrar usuario</h3>
+    <button type="button" class="close pull-right" arial-label="Close" (click)="modalService.hide()">
+      <span aria-hidden="true"> &times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body">
+
+    <form [formGroup]="registrarUsuarioForm" (ngSubmit)="registrarUsuario()">
+      <div class="row">
+        <div class="col-sm-4">
+          <label>Tipo documento:</label>
+        </div>
+        <div class="col-sm-8">
+          <select  id="tipoDocUsuarioregistro" name="tipoDocUsuario" 
+          formControlName="tipoIdentificacion" class="form-select form-control" >
+            <option value="CC" selected>Cedula ciudadania</option>
+            <option value="CE">Cedula extranjera</option>
+            <option value="PP">Pasaporte</option>
+            <option value="RC">Registro civil</option>
+            <option value="TI">Tarjeta de identidad</option>
+          </select>
+         
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <label>Docuemnto:</label>
+        </div>
+        <div class="col-sm-8">
+          <input validar type="text" id="numDocumentoRegistro" name="numeroDocumento" placeholder="Número documento"
+            class="form-control" formControlName="numeroIdentificacion">
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-4">
+            <label>Nombre:</label>
+          </div>
+          <div class="col-sm-8">
+            <input validar type="text" id="nombreusuarioRegistro" name="aplicadas" 
+              class="form-control" formControlName="nombre">
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+            <label>Fecha Nacimiento:</label>
+          </div>
+          <div class="col-sm-8">
+            <input validar type="date" id="fechanac" name="aplicadas" 
+              class="form-control" formControlName="fechaNacimiento">
+          </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4">
+            <label>Tipo sangre:</label>
+          </div>
+          <div class="col-sm-8">
+            
+            <input validar type="text" id="tipoSangre" name="aplicadas" 
+              class="form-control" formControlName="tipoSangre">
+          </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-2">
+            <button class="btn btn-primary" id="btnRegistrarUsuarioGuardar"
+             [disabled]="!registrarUsuarioForm.valid">Guardar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<router-outlet></router-outlet>
