@@ -14,7 +14,7 @@ pipeline {
 
   //Una sección que define las herramientas “preinstaladas” en Jenkins
   tools {
-    nodejs 'Node12' //Verisión preinstalada en la Configuración del Master
+    nodejs 'Node11' //Verisión preinstalada en la Configuración del Master
   }
 /*    Versiones disponibles
       JDK8_Mac
