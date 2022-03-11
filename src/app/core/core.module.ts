@@ -9,6 +9,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HttpService } from './services/http.service';
 import { ManejadorError } from './interceptor/manejador-error';
 import { RouterModule } from '@angular/router';
+import { TrmService } from '@vacunas/shared/services/trm.service';
 
 @NgModule({
   declarations: [ToolbarComponent, NavbarComponent],
@@ -19,6 +20,7 @@ import { RouterModule } from '@angular/router';
   exports: [ToolbarComponent, NavbarComponent],
   providers: [
     HttpService,
+    TrmService,
     SecurityGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

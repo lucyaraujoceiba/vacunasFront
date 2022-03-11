@@ -45,6 +45,7 @@ export class VacunarComponent implements OnInit {
   idUsuario : number = 0;
   nombreUsuario: string = "";
   mensajealerta : string = "";
+ 
   mostrar = false;
   public listaVacunasP : Vacuna[];
   public vacunasPendientes:  VacunasPendientes;
@@ -54,13 +55,12 @@ export class VacunarComponent implements OnInit {
   headElements = ['ID', 'Nombre', 'Estado', 'Fecha Aplicación', 'Dosis aplicada','Tiempo entre dosis', 'Valor', 'Subsidiada', ' '];
 
   constructor(public modalService: BsModalService,
-    public vacunaService: VacunaService,
+    public vacunaService: VacunaService
     ) { }
 
   ngOnInit(): void {
     this.tipoDoc = CEDULA;
     this.construirFormularioConsultarUsuario();
-    
   }
   buscar(){
     this.tipoDoc = this.usuarioForm.get("id").value;

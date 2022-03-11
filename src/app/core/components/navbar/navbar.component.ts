@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MenuItem } from '@core/modelo/menu-item';
+import { TrmService } from '@vacunas/shared/services/trm.service';
 
 @Component({
   selector: 'app-navbar',
@@ -32,9 +33,16 @@ export class NavbarComponent implements OnInit {
   @Input()
   items: MenuItem[];
 
-  constructor() { }
+  valorTrm = '';
+  constructor(public trmService: TrmService) { }
 
   ngOnInit() {
+
+    var f = new Date();
+    let fecha: string = f.getFullYear() + '-' + (f.getMonth() + 1) + '-'+ f.getDate();
+    this.trmService.consultarPorFuera(fecha).subscribe(
+      data => (console.log(data), this.valorTrm = data[0].valor)
+    )
   }
 
 }

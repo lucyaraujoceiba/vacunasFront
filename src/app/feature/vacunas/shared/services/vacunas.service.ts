@@ -13,10 +13,24 @@ export class VacunaService {
   constructor(
     protected httpa: HttpClient, protected http: HttpService) {}
 
+  /**
+   * Consulta vacunas en estado aplicada
+   * @param tipoDoc 
+   * @param documento 
+   * @param estado 
+   * @returns 
+   */
   public consultarVacunasAplicadas(tipoDoc: string, documento: string, estado: string) {
     return this.httpa.get<Vacuna[]>(`${environment.endpoint}vacunas/${estado}/${tipoDoc}/${documento}`);
   }
 
+  /**
+   * Consulta vacunas en estado pendiente
+   * @param tipoDoc 
+   * @param documento 
+   * @param estado 
+   * @returns 
+   */
   public consultarVacunasPendeintes(tipoDoc: string, documento: string, estado: string) {
     return this.httpa.get<VacunasPendientes>(`${environment.endpoint}vacunas/${estado}/${tipoDoc}/${documento}`);
   }
@@ -36,11 +50,7 @@ export class VacunaService {
     }else{
       vacuna.subsidiada = 'N'
     }
-    console.log(vacuna);
-    console.log(environment.endpoint);
-    
     return this.http.doPost<Vacuna, Respuesta>(`${environment.endpoint}vacunas`, vacuna, this.http.optsName('crear vacunas'));
-    return this.httpa.post< Respuesta>(`${environment.endpoint}vacunas`, vacuna);
    
   }
 
@@ -52,11 +62,22 @@ export class VacunaService {
   public aplicarVacuna(vacuna: Vacuna){
     return this.httpa.put<boolean>(`${environment.endpoint}vacunas/${vacuna.id}`, vacuna);
   }
+  /**
+   * Registra un usuario
+   * @param usuario 
+   * @returns 
+   */
   public guardarUsuario(usuario: Usuario){
     console.log(`${environment.endpoint}usuarios/`);
     return this.httpa.post<Respuesta>(`${environment.endpoint}usuarios/`,usuario)
   }
 
+  /**
+   * Consulta un usuario
+   * @param tipoDoc 
+   * @param documento 
+   * @returns 
+   */
   public consultarUsuario(tipoDoc: string, documento: string){
     return this.httpa.get<Usuario[]>(`${environment.endpoint}usuarios/${tipoDoc}/${documento}`);
   }

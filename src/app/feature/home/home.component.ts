@@ -13,13 +13,6 @@ export class HomeComponent implements OnInit {
  
 
   ngOnInit() {
-    this.obtener();
   }
 
-  obtener(){
-  /*  const trmcol = require('trmcol');
-    trmcol.query('2018-03-30')
-  .then(trm => console.log(trm))
-  .catch(err => console.log(err))*/
-  }
 }
