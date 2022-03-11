@@ -18,30 +18,22 @@ describe('workspace-project Producto', () => {
         vacuna = new VacunasPage();
     });
 
-    it('Deberia buscar vacunas pendientes', () => {
-        const DOCUMENTO = '12345';
-      //  const PENDIENTE = 'S';
+   /* it('Deberia buscar vacunas pendientes', () => {
+        const DOCUMENTO = vacuna.getRandomCedula(10000, 20000);;
         page.navigateTo();
         navBar.clickBotonVacunas();
-
-       // vacuna.ingresarTipoDoc(TIPO_DOC);
         vacuna.ingresarDocumento(DOCUMENTO);
-       // vacuna.ingresarPendientes(PENDIENTE);
         vacuna.clickBotonBuscarVacunas();
         expect(0).toBe(vacuna.contarvacunas());
-
-
-      
     });
 
     it('Deberia crear usuario',( )=> {
         
-        const DOCUMENTO = '12346';
+        const DOCUMENTO = vacuna.getRandomCedula(10000, 20000);;
         page.navigateTo();
         navBar.clickBotonVacunas();
 
         vacuna.clickbtnRegistrarUsuario();
-       // vacuna.ingresarinputnumDocumentoRegistro(TIPO_DOC);
         vacuna.ingresarinputnumDocumentoRegistro(DOCUMENTO);
         vacuna.ingresarinputtipoSangre(TIPO_SANGRE);
         vacuna.ingresarinputfechanac(FECHA_NACIMIENTO);
@@ -54,11 +46,10 @@ describe('workspace-project Producto', () => {
 
     
     it('Deberia crear vacunas', () => {
-        const DOCUMENTO = '12348';
+        const DOCUMENTO = vacuna.getRandomCedula(10000, 20000);
         const NOMBRE_VACUNA = 'influenzxa';
         const DOSIS = 1;
         const TIEMPO_DOSIS = 1;
-        //const ESTADO = 'pendiente';
         const VALOR = 1000;
         const SUBSIDIADA= 'S';
         const DOSIS_PENDIENTES= 'S';
@@ -66,9 +57,7 @@ describe('workspace-project Producto', () => {
 
         page.navigateTo();
         navBar.clickBotonVacunas();
-
         vacuna.clickbtnRegistrarUsuario();
-       // vacuna.ingresarinputnumDocumentoRegistro(TIPO_DOC);
         vacuna.ingresarinputnumDocumentoRegistro(DOCUMENTO);
         vacuna.ingresarinputtipoSangre(TIPO_SANGRE);
         vacuna.ingresarinputfechanac(FECHA_NACIMIENTO);
@@ -85,12 +74,11 @@ describe('workspace-project Producto', () => {
 
         vacuna.clickbtnGuardarVacuna();
         vacuna.clickBotonBuscarVacunas();
-        //expect(4).toBe(vacuna.contarProductos());
         
         expect(1).toBe(vacuna.contarvacunas());
 
         
-    });
+    });*/
 
     /*it('Deberia aplicar vacuna', () => {
         const DOCUMENTO = '12349';
