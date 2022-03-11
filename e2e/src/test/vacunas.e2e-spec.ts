@@ -18,7 +18,7 @@ describe('workspace-project Producto', () => {
         vacuna = new VacunasPage();
     });
 
-   /* it('Deberia buscar vacunas pendientes', () => {
+    it('Deberia buscar vacunas pendientes', () => {
         const DOCUMENTO = vacuna.getRandomCedula(10000, 20000);;
         page.navigateTo();
         navBar.clickBotonVacunas();
@@ -78,9 +78,9 @@ describe('workspace-project Producto', () => {
         expect(1).toBe(vacuna.contarvacunas());
 
         
-    });*/
+    });
 
-    /*it('Deberia aplicar vacuna', () => {
+    it('Deberia aplicar vacuna', () => {
         const DOCUMENTO = '12349';
         const NOMBRE_VACUNA = 'difteria';
         const DOSIS = 1;
@@ -91,7 +91,7 @@ describe('workspace-project Producto', () => {
         const DOSIS_PENDIENTES= 'S';
         //const APLICADAS = false;
 
-        Actions actions = new Actions(driver);
+        //Actions actions = new Actions(driver);
 
         page.navigateTo();
         navBar.clickBotonVacunas();
@@ -125,5 +125,5 @@ describe('workspace-project Producto', () => {
         //vacuna.clickBotonBuscarVacunas();
 
         //expect(0).toBe(vacuna.contarvacunas());
-    });*/
+    });
 });
